@@ -1,0 +1,38 @@
+[
+    {
+        "category":"Duranta",
+        "img":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTaYQjwLlpRLlr-6-mVxUK2_xrwUKZequQ8A&usqp=CAU",
+        "orginalPrice":"12000",
+        "condition":"Good",
+        "phone":"01345987698",
+        "location":"cumilla",
+        "descriptin":"it is a good product",
+        "resalePrice":"5000",
+        "use":"2",
+        "date":"Fri Nov 25 2022"
+    },
+    {
+        "category":"Duranta",
+        "img":"https://i.ibb.co/0cS0bzC/download.jpg",
+        "orginalPrice":"12000",
+        "condition":"Good",
+        "phone":"01345987698",
+        "location":"cumilla",
+        "descriptin":"it is a good product",
+        "resalePrice":"5000",
+        "use":"2",
+        "date":"Fri Nov 25 2022"
+    },
+    {
+        "category":"Duranta",
+        "img":"https://i.ibb.co/2vzZj4M/download-1.jpg",
+        "orginalPrice":"12000",
+        "condition":"Good",
+        "phone":"01345987698",
+        "location":"cumilla",
+        "descriptin":"it is a good product",
+        "resalePrice":"5000",
+        "use":"2",
+        "date":"Fri Nov 25 2022"
+    }
+]
