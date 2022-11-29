@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const cors = require('cors');
 const jwt = require('jsonwebtoken')
@@ -36,12 +36,19 @@ async function run(){
             const result = await bookingsCollections.insertOne(booking);
             res.send(result);
         })
+        app.get('/bookings/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {
+                _id:ObjectId(id)
+            }
+            const booking = await bookingsCollections.findOne(query);
+            res.send(booking);
+        })
 
         app.post('/users',async(req,res)=>{
             const user = req.body;
             const result = await usersCollections.insertOne(user);
             res.send(result);
-            console.log(result)
         })
 
         app.get('/orders',async(req,res)=>{
@@ -73,7 +80,15 @@ async function run(){
             const products = req.body;
             const result = await productsCollections.insertOne(products);
             res.send(result);
-            console.log(result);
+        })
+
+        app.get('/products',async(req,res)=>{
+            const email = req.query.email;
+            const query ={
+                email:email
+            }
+            const product = await productsCollections.find(query).toArray();
+            res.send(product);
         })
 
 
