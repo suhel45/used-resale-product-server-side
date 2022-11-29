@@ -16,23 +16,21 @@ app.get('/',(req,res)=>{
     res.send('node is running')
 })
 
-function verifyJwt(req,res,next){
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dwtnipt.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+const  verifyJWT = (req,res,next)=>{
     const authHeader = req.headers.authorization;
     if(!authHeader){
-        res.send({message:'Unauthorized access'})
+        res.send({message:'unauthorized access'})
     }
     const token = authHeader.split(' ')[1];
     jwt.verify(token,process.env.ACCESS_TOKEN,function(err,decoded){
-        if(err){
-            res.send({message:'Unauthorized access'})
-        }
-        req.decoded = decoded;
+        if(err){res.send({message:'unauthorized access'})}
+        req.decoded=decoded;
         next();
     })
 }
-
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dwtnipt.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run(){
     try{
@@ -65,7 +63,7 @@ async function run(){
             res.send(result);
         })
 
-        app.get('/orders',verifyJwt, async(req,res)=>{
+        app.get('/orders',verifyJWT, async(req,res)=>{
             const email = req.query.email;
             const query={
                 email:email
@@ -80,6 +78,13 @@ async function run(){
             }
             const result = await usersCollections.find(query).toArray();
             res.send(result);
+        })
+        app.get('/admin',verifyJWT, async(req,res)=>{
+            const query = {
+                admin:'Admin'
+            }
+            const admin = await usersCollections.find(query).toArray();
+            res.send(admin);
         })
 
         app.get('/buyers',async(req,res)=>{
@@ -105,10 +110,9 @@ async function run(){
             res.send(product);
         })
 
-
         app.post('/jwt',(req,res)=>{
-            const user = req.body;
-            const token = jwt.sign(user,process.env.ACCESS_TOKEN,{expiresIn:'360d'})
+            const usr = req.body;
+            const token = jwt.sign(usr,process.env.ACCESS_TOKEN,{expiresIn:'1h'})
             res.send({token})
         })
     }
