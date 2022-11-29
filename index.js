@@ -15,7 +15,21 @@ app.use(express.json());
 app.get('/',(req,res)=>{
     res.send('node is running')
 })
-console.log(process.env.DB_USER)
+
+function verifyJwt(req,res,next){
+    const authHeader = req.headers.authorization;
+    if(!authHeader){
+        res.send({message:'Unauthorized access'})
+    }
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token,process.env.ACCESS_TOKEN,function(err,decoded){
+        if(err){
+            res.send({message:'Unauthorized access'})
+        }
+        req.decoded = decoded;
+        next();
+    })
+}
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dwtnipt.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -51,7 +65,7 @@ async function run(){
             res.send(result);
         })
 
-        app.get('/orders',async(req,res)=>{
+        app.get('/orders',verifyJwt, async(req,res)=>{
             const email = req.query.email;
             const query={
                 email:email
