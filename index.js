@@ -79,7 +79,8 @@ async function run(){
             const result = await usersCollections.find(query).toArray();
             res.send(result);
         })
-        app.get('/admin',verifyJWT, async(req,res)=>{
+
+        app.get('/admin', async(req,res)=>{
             const query = {
                 admin:'Admin'
             }
@@ -94,7 +95,6 @@ async function run(){
             const result = await usersCollections.find(query).toArray();
             res.send(result);
         })
-
         app.post('/products',async(req,res)=>{
             const products = req.body;
             const result = await productsCollections.insertOne(products);
@@ -114,6 +114,18 @@ async function run(){
             const usr = req.body;
             const token = jwt.sign(usr,process.env.ACCESS_TOKEN,{expiresIn:'1h'})
             res.send({token})
+        })
+        app.delete('/sellers/:id',verifyJWT,async(req,res)=>{
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollections.deleteOne(filter);
+            res.send(result);
+        })
+        app.delete('/buyers/:id',verifyJWT,async(req,res)=>{
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollections.deleteOne(filter);
+            res.send(result);
         })
     }
     finally{
