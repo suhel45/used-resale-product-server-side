@@ -80,7 +80,7 @@ async function run(){
             res.send(result);
         })
 
-        app.get('/admin', async(req,res)=>{
+        app.get('/admin',async(req,res)=>{
             const query = {
                 admin:'Admin'
             }
