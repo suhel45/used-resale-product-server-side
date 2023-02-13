@@ -35,12 +35,24 @@ const  verifyJWT = (req,res,next)=>{
 async function run(){
     try{
         const durantaCollections = client.db('Bi-cycle-stores').collection('duranta');
+        const HeroCollections = client.db('Bi-cycle-stores').collection('Hero');
+        const PhoenixCollections = client.db('Bi-cycle-stores').collection('Phoenix');
         const bookingsCollections = client.db('Bi-cycle-stores').collection('booking');
         const usersCollections = client.db('Bi-cycle-stores').collection('users');
         const productsCollections = client.db('Bi-cycle-stores').collection('products');
         app.get('/duranta',async(req,res)=>{
             const query = { }
             const result = await durantaCollections.find(query).toArray();
+            res.send(result)
+        })
+        app.get('/Hero',async(req,res)=>{
+            const query = { }
+            const result = await HeroCollections.find(query).toArray();
+            res.send(result)
+        })
+        app.get('/Phoenix',async(req,res)=>{
+            const query = { }
+            const result = await PhoenixCollections.find(query).toArray();
             res.send(result)
         })
         app.post('/bookings',async(req,res)=>{
@@ -63,8 +75,9 @@ async function run(){
             res.send(result);
         })
 
-        app.get('/orders',verifyJWT, async(req,res)=>{
+        app.get('/orders', async(req,res)=>{
             const email = req.query.email;
+            console.log(email);
             const query={
                 email:email
             }
